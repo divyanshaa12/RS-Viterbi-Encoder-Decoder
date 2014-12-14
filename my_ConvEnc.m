@@ -1,4 +1,4 @@
-function [c1,c2,tail] = ConvEnc(m)
+function [c1,c2,tail] = my_ConvEnc(m)
 
 %%
 %Encoding
