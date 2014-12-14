@@ -1,6 +1,6 @@
 clear; clc; close all;
 
-%m=[1 0 1 1 1 0 0 0 0 1 1 0 0 1 0 0 0 0 1 0 0 0 0 0];
+% m_cc=[1 0 1 1 1];
 for i=1:63
     for j=1:24
         m_rs(i,j)= round(rand);
@@ -17,7 +17,7 @@ end
 m_cc=m_cc(2:length(m_cc));
 
 %Encoding
-[c1,c2,tail] = my_ConvEnc(m_cc);
+[c1,c2] = my_ConvEnc(m_cc);
 
 %Noise addition
 snr=1;
@@ -33,4 +33,5 @@ for i=1:length(c2_n)
         c2_n(i)=0;
     end
 end
+
 
