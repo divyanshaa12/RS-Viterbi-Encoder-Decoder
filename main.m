@@ -1,6 +1,6 @@
 clear; clc; close all;
 
-m_cc=[1 1 0 0 1 0 1 0];
+m_cc=[1 1 0 0 1 0 1 0 0];
 % for i=1:63
 %     for j=1:24
 %         m_rs(i,j)= round(rand);
@@ -27,8 +27,8 @@ for i=1:length(c1)
     c2_n(i)=c2(i) + normrnd(0,sd);
 end
 
-c1_n=[1 1 -1 1 1 -1 -1 -1];
-c2_n=[1 -1 -1 -1 1 1 -1 1];
+c1_n=c1;%[1 1 -1 1 1 -1 -1 -1];
+c2_n=c2;%[1 -1 -1 -1 1 1 -1 1];
 %padding zeros at punctured bits.
 % for i=1:length(c2_n)
 %     if mod(i,3)==0
@@ -88,3 +88,13 @@ for j=1:length(c1_n)
     PM=PM_next;
 end
 path=fliplr(path);
+
+%trace back from path 0
+
+curr_state = 0; %Start from 0 since we made sure that the encoder ends in state 0.
+for i=length(path):-1:1
+    pre_state = path(curr_state+1,i);
+    [r c]=find(pre_in_out(:,1,curr_state+1)==pre_state);
+    m(i) = pre_in_out(r,2,curr_state+1);
+    curr_state=pre_state;
+end
