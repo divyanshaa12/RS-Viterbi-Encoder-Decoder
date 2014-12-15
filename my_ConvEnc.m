@@ -1,4 +1,4 @@
-function [c1,c2] = my_ConvEnc(m)
+function [c1,c2,trellis] = my_ConvEnc(m)
 
 %%
 %Encoding
@@ -12,6 +12,8 @@ function [c1,c2] = my_ConvEnc(m)
 %	m-----+-------| D |----| D^2 |----| D^3 |----| D^4 |--
 %	      |______________________________________________|    
 %
+% Constraint Length=5; Generator Polynomial matrix [21,37] and 21 as
+% feedback connection
 %%
 
 for i=1:length(m)
@@ -46,3 +48,5 @@ for i=1:length(tail)
     in_mem = [m_tmp in_mem(1:3)];
     
 end
+
+trellis = poly2trellis(5,[21 37],21);
