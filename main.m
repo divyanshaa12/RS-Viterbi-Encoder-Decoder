@@ -75,7 +75,7 @@ end
 figure('Name','Eb/N0 vs. PER Plot')
 snr=0:0.2:5;
 h=semilogy(snr,ber);
-title('Eb/N0 vs. PER Plot')
+title('PER vs Eb/N0 Plot')
 grid on
 xlabel('Eb/N0')
 ylabel('PER')
