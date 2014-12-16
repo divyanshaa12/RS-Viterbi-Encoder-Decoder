@@ -1,6 +1,5 @@
 clear; clc; close all;
 
-% m_cc=[1 1 0 1 0 0 1 0 0];
 for i=1:63
     for j=1:24
         m_rs(i,j)= round(rand);
@@ -16,8 +15,11 @@ for i=1:6:24
 end
 m_cc=m_cc(2:length(m_cc));
 
+%loading trellis structure
+load 'trellis.mat';
+
 %Encoding
-[c1,c2,trellis] = my_ConvEnc(m_cc);
+[c1,c2] = my_ConvEnc(m_cc);
 
 
 R=0.5*(6/5)*(53/63);
@@ -27,7 +29,7 @@ frame_error=0;
 num_of_iter=0;
 tmp=1;
 
-for snr=0:0.5:4;
+for snr=0:0.2:5;
     while (frame_error<=50)
         sd= (2*R*(10^(snr/10)))^-0.5;
         
@@ -60,15 +62,22 @@ for snr=0:0.5:4;
         frame_error= frame_error + (1 - isequal(m_rs,rs_out));
         num_of_iter = num_of_iter + 1;
         be(tmp,num_of_iter) = nnz(xor(m_rs,rs_out));
-        if num_of_iter > 2000
+        if num_of_iter > 10000
             break
         end
     end
     ber(tmp) = mean(be(tmp,:))/(length(m_cc));
     frame_error=0;
     num_of_iter=0;
-    tmp=tmp+1;
+    tmp=tmp+1
 end
 
-snr=0:0.5:4;
-semilogy(snr,ber)
+figure('Name','Eb/N0 vs. PER Plot')
+snr=0:0.2:5;
+h=semilogy(snr,ber);
+title('Eb/N0 vs. PER Plot')
+grid on
+xlabel('Eb/N0')
+ylabel('PER')
+saveas(h,'Performance_Plot','eps');
+save 'workspace.mat'

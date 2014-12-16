@@ -1,4 +1,4 @@
-function [c1,c2,trellis] = my_ConvEnc(m)
+function [c1,c2] = my_ConvEnc(m)
 
 %%
 %Encoding
@@ -49,4 +49,4 @@ for i=1:length(tail)
     
 end
 
-trellis = poly2trellis(5,[21 37],21);
+% trellis = poly2trellis(5,[21 37],21);
