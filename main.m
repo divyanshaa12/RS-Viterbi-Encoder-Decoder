@@ -1,35 +1,36 @@
 clear; clc; close all;
 
-for i=1:63
-    for j=1:24
-        m_rs(i,j)= round(rand);
-    end
-end
-
-%reading in interleaved order
-m_cc=0;
-for i=1:6:24
-    for j=1:63
-        m_cc=[m_cc m_rs(j,i:5+i)];
-    end
-end
-m_cc=m_cc(2:length(m_cc));
-
 %loading trellis structure
 load 'trellis.mat';
 
-%Encoding
-[c1,c2] = my_ConvEnc(m_cc);
-
-
+%rate
 R=0.5*(6/5)*(53/63);
-
+tmp=1
 %snr sweep
-frame_error=0;
-num_of_iter=0;
-tmp=1;
-
 for snr=0:0.2:5;
+    
+    for i=1:63
+        for j=1:24
+            m_rs(i,j)= round(rand);
+        end
+    end
+    
+    %reading in interleaved order
+    m_cc=0;
+    for i=1:6:24
+        for j=1:63
+            m_cc=[m_cc m_rs(j,i:5+i)];
+        end
+    end
+    m_cc=m_cc(2:length(m_cc));
+    
+    %Encoding
+    [c1,c2] = my_ConvEnc(m_cc);
+    
+    %snr sweep initialization
+    frame_error=0;
+    num_of_iter=0;
+        
     while (frame_error<=50)
         sd= (2*R*(10^(snr/10)))^-0.5;
         
@@ -67,8 +68,6 @@ for snr=0:0.2:5;
         end
     end
     ber(tmp) = mean(be(tmp,:))/(length(m_cc));
-    frame_error=0;
-    num_of_iter=0;
     tmp=tmp+1
 end
 
